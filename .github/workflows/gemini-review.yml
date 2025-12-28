@@ -1,0 +1,22 @@
+name: Gemini Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Gemini Review
+        uses: google-github-actions/run-gemini-cli@v1
+        with:
+          api-key: ${{ secrets.GEMINI_API_KEY }}
+          prompt: "다음 Pull Request의 변경 사항을 분석해서 요약해주고, 잠재적인 버그나 개선 사항이 있다면 한국어로 댓글을 남겨줘."
